@@ -15,13 +15,16 @@ import java.util.stream.Collectors;
 public class GetCurrency {
 
     public static void getCurrency(List<Currency> curr) throws Exception {
-
+        if (curr.isEmpty()) {
+            return;
+        }
         Map<String, Currency> currencies = curr.stream().collect(Collectors.toMap(Currency::getName, cur -> cur));
         try {
             DocumentBuilder documentBuilder = DocumentBuilderFactory.newInstance().newDocumentBuilder();
             Document document = documentBuilder.parse("https://www.cbr-xml-daily.ru/daily.xml");
             Node root = document.getDocumentElement();
             NodeList childNodes = root.getChildNodes();
+            int count = 0, max = currencies.size();
             for (int i = 0; i < childNodes.getLength(); i++) {
                 NodeList currency = childNodes.item(i).getChildNodes();
                 Node code = currency.item(1);
@@ -30,6 +33,10 @@ public class GetCurrency {
                 }
                 if (currencies.containsKey(code.getFirstChild().getNodeValue())) {
                     currencies.get(code.getFirstChild().getNodeValue()).setActual(Double.valueOf(StringUtils.replace(currency.item(4).getFirstChild().getNodeValue(), ",", ".")));
+                    count++;
+                    if (count == max) {
+                        return;
+                    }
                 }
             }
         } catch (ParserConfigurationException pe) {

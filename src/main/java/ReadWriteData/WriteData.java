@@ -7,15 +7,20 @@ import org.jetbrains.annotations.NotNull;
 import javax.xml.stream.XMLOutputFactory;
 import javax.xml.stream.XMLStreamException;
 import javax.xml.stream.XMLStreamWriter;
+import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 
 public class WriteData {
 
-    public static void write(@NotNull List<Currency> currency) throws XMLStreamException, IOException {
+    public static void write(@NotNull List<Currency> currency) throws Exception {
         XMLOutputFactory output = XMLOutputFactory.newInstance();
-        XMLStreamWriter writer = output.createXMLStreamWriter(new FileWriter("data.xml"));
+        File file = new GetFile().getFile();
+        if (file == null) {
+            throw new Exception("File wasn't found");
+        }
+        XMLStreamWriter writer = output.createXMLStreamWriter(new FileWriter(file));
 
         writer.writeStartDocument("1.0");
         writer.writeStartElement("Currencies");
