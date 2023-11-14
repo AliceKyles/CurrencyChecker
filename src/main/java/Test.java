@@ -2,6 +2,7 @@ import ReadWriteData.Currency;
 import ReadWriteData.GetCurrency;
 import ReadWriteData.ReadData;
 import ReadWriteData.WriteData;
+import org.apache.commons.lang3.ObjectUtils;
 import org.junit.jupiter.api.Assertions;
 
 import java.util.Arrays;
@@ -19,15 +20,19 @@ public class Test {
             Assertions.assertEquals(2, currencies.size());
             GetCurrency.getCurrency(currencies);
             for (Currency currency : currencies) {
-                Integer result = currency.getCompare();
-                if (result == null) {
-                    System.out.println("Something went wrong : " + currency.getName());
-                } else if (result < 0) {
-                    System.out.println(currency.getName() + " is too low, should be more than " + currency.getFrom() + ", is " + currency.getActual());
-                } else if (result > 0) {
-                    System.out.println(currency.getName() + " is too high, should be less than " + currency.getTo() + ", is " + currency.getActual());
-                } else {
-                    System.out.println(currency.getName() + " is " + currency.getActual() + ", within the correct range");
+                int result = ObjectUtils.defaultIfNull(currency.getCompare(), -2);
+                switch (result) {
+                    case Currency.TOO_LOW:
+                        System.out.println(currency.getName() + " is too low, should be more than " + currency.getFrom() + ", is " + currency.getActual());
+                        break;
+                    case Currency.TOO_HIGH:
+                        System.out.println(currency.getName() + " is too high, should be less than " + currency.getTo() + ", is " + currency.getActual());
+                        break;
+                    case Currency.PERFECT:
+                        System.out.println(currency.getName() + " is " + currency.getActual() + ", within the correct range");
+                        break;
+                    default:
+                        System.out.println("Something went wrong : " + currency.getName());
                 }
             }
         } catch (Exception e) {

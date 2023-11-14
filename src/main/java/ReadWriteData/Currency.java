@@ -1,6 +1,10 @@
 package ReadWriteData;
 
 public class Currency {
+    public static final int PERFECT = 0;
+    public static final int TOO_LOW = -1;
+    public static final int TOO_HIGH = 1;
+
     private String name;
     private Double from;
     private Double to;
@@ -62,21 +66,21 @@ public class Currency {
             return null;
         } else if (to != null) {
             if (to < value) {
-                return 1;
+                return TOO_HIGH;
             } else if (from != null) {
                 if (from > value) {
-                    return -1;
+                    return TOO_LOW;
                 } else {
-                    return 0;
+                    return PERFECT;
                 }
             } else {
-                return 0;
+                return PERFECT;
             }
         } else if (from != null) {
             if (from > value) {
-                return -1;
+                return TOO_LOW;
             } else {
-                return 0;
+                return PERFECT;
             }
         }
         return null;
