@@ -40,7 +40,7 @@ public class GetCurrency {
                 }
             }
         } catch (ParserConfigurationException pe) {
-            throw new Exception("Can't parse received file");
+            throw new Exception("Can't parse the received file");
         } catch (Exception e) {
             throw new Exception(e.getMessage());
         }

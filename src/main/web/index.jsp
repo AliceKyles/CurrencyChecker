@@ -6,23 +6,37 @@
 
 <head>
     <title>Currency</title>
+    <style type="text/css">
+        .errorMessage {
+            font-weight: bold;
+            color: red;
+        }
+        .errField {
+            border: 2px solid red;
+        }
+    </style>
 </head>
 <body>
 <s:form action="index">
+    <s:actionerror/>
     <table>
-        <tr>
-            <td></td>
-            <td>Currency</td>
-            <td>From</td>
-            <td>To</td>
-            <td>Actual value</td>
-        </tr>
+        <s:if test="!currencies.empty">
+            <tr>
+                <td></td>
+                <td>Currency</td>
+                <td>From</td>
+                <td>To</td>
+                <td>Actual value</td>
+            </tr>
+        </s:if>
         <s:iterator var="item" value="currencies" status="status">
             <tr>
+                <s:hidden name="currencies[%{#status.index}].actual"/>
+                <s:hidden name="currencies[%{#status.index}].compare"/>
                 <td><s:property value="status.count"/></td>
-                <td><s:select name="currencies[%{#status.index}].name" list="currencyNames" cssErrorClass="has-error"/></td>
-                <td><s:textfield name="currencies[%{#status.index}].from" maxlength="10" cssErrorClass="has-error"/></td>
-                <td><s:textfield name="currencies[%{#status.index}].to" maxlength="10" cssErrorClass="has-error"/></td>
+                <td><s:select name="currencies[%{#status.index}].name" list="currencyNames" cssErrorClass="errField"/></td>
+                <td><s:textfield name="currencies[%{#status.index}].from" maxlength="10" cssErrorClass="errField"/></td>
+                <td><s:textfield name="currencies[%{#status.index}].to" maxlength="10" cssErrorClass="errField"/></td>
                 <td>
                     <s:if test="#item.actual != null">
                         <span style="color:<s:property value='colour[#item.compare]'/>"><s:property value="#item.actual"/></span>
@@ -32,9 +46,9 @@
             </tr>
         </s:iterator>
     </table>
-    <s:submit name="getActual" value="Get Actual Value" cssClass="btn btn-primary pull-right"/>
-    <s:submit name="getFromFile" value="Load Values" cssClass="btn btn-primary pull-right"/>
-    <s:submit name="writeToFile" value="Save Values" cssClass="btn btn-primary pull-right"/>
-    <s:submit name="addCurrency" value="Add New Currency" cssClass="btn btn-primary pull-right"/>
+    <s:submit name="getActual" value="Check"/>
+    <s:submit name="getFromFile" value="Load"/>
+    <s:submit name="writeToFile" value="Save"/>
+    <s:submit name="addCurrency" value="Add"/>
 </s:form>
 </body>

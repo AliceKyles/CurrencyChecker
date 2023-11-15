@@ -57,7 +57,7 @@ public class Currency {
         return compare;
     }
 
-    private void setCompare(Integer compare) {
+    public void setCompare(Integer compare) {
         this.compare = compare;
     }
 
