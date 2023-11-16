@@ -8,13 +8,10 @@ import java.util.Map;
 
 public class CurrencyName {
 
-    public static final String RUB = "RUB";
-
     private static final Map<String, String> VALUES = new LinkedHashMap<>();
 
 
     static {
-        VALUES.put(RUB, "Russian ruble");
         VALUES.put("USD", "United States dollar");
         VALUES.put("EUR", "Euro");
         VALUES.put("GBP", "Sterling (British pound)");
@@ -63,9 +60,5 @@ public class CurrencyName {
     @NotNull
     public static Map<String, String> getValues() {
         return Collections.unmodifiableMap(VALUES);
-    }
-
-    public static String getValue(String id) {
-        return VALUES.get(id);
     }
 }

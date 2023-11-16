@@ -42,13 +42,15 @@
                         <span style="color:<s:property value='colour[#item.compare]'/>"><s:property value="#item.actual"/></span>
                     </s:if>
                 </td>
-                <td><a href="index.action?deleteCurrency=<s:property value='#status.count'/>" style="color:red">Delete</a></td>
+                <td><s:submit type="button" name="delete" value="%{#status.index}" label="Delete"/></td>
             </tr>
         </s:iterator>
     </table>
-    <s:submit name="getActual" value="Check"/>
-    <s:submit name="getFromFile" value="Load"/>
-    <s:submit name="writeToFile" value="Save"/>
-    <s:submit name="addCurrency" value="Add"/>
+    <div style="margin-left: 5px">
+        <s:submit name="getActual" value="Check"/>
+        <s:submit name="getFromFile" value="Load"/>
+        <s:submit name="writeToFile" value="Save"/>
+        <s:submit name="addCurrency" value="Add"/>
+    </div>
 </s:form>
 </body>

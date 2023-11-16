@@ -16,7 +16,7 @@ public class IndexAction extends ActionSupport implements SessionAware {
 
     protected Map<String, Object> session;
     private final List<Currency> currencies = new ArrayList<>();
-    private Integer deleteCurrency;
+    private String delete;
     private String getActual;
     private String getFromFile;
     private String writeToFile;
@@ -39,24 +39,26 @@ public class IndexAction extends ActionSupport implements SessionAware {
                 GetCurrency.getCurrency(currencies);
             } else if (addCurrency != null) {
                 currencies.add(new Currency());
+            } else if (delete != null) {
+                removeCurrency(delete);
             }
         } catch (Exception e) {
             addActionError("Internal error: " + e.getMessage());
         }
-        removeCurrency(deleteCurrency);
         session.put("currencies", currencies);
         return INPUT;
     }
 
-    public void removeCurrency(Integer num) {
-        if (num == null || num > currencies.size() || num < 1) {
+    public void removeCurrency(String index) {
+        int num = Integer.parseInt(index);
+        if (num > currencies.size() - 1 || num < 0) {
             return;
         }
-        currencies.remove(currencies.get(num - 1));
+        currencies.remove(currencies.get(num));
     }
 
     public void validate() {
-        if (ObjectUtils.anyNotNull(getFromFile, addCurrency)) {
+        if (ObjectUtils.anyNotNull(getFromFile, addCurrency, delete)) {
             return;
         }
         int i = 0;
@@ -112,12 +114,12 @@ public class IndexAction extends ActionSupport implements SessionAware {
         return map;
     }
 
-    public Integer getDeleteCurrency() {
-        return deleteCurrency;
+    public String getDelete() {
+        return delete;
     }
 
-    public void setDeleteCurrency(Integer deleteCurrency) {
-        this.deleteCurrency = deleteCurrency;
+    public void setDelete(String delete) {
+        this.delete = delete;
     }
 
     public void setGetActual(String getActual) {
